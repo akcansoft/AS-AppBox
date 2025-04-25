@@ -1,17 +1,19 @@
 # AS AppBox
 
-AS AppBox is an application manager that helps you organize and quickly launch your favorite programs. Built with AutoHotkey v2, it offers a modern and user-friendly interface.
+AS AppBox is an application manager that helps you organize and quickly launch your favorite programs. Built with AutoHotkey v2, it offers a modern and user-friendly interface.\
+![Screenshot](https://github.com/akcansoft/AS-AppBox/blob/main/AppBox-SS-1.png)
 
 ## Features
 
 - Add and remove applications from your list
 - Run selected applications with one click
-- Filter applications by name
-- Save and load your application list
+- Filter applications
+- Save application list
 - Drag and drop support for adding apps
 - Context menu for quick actions
-- Multiple view modes (list/icon)
+- Switch between list view, small icons, and large icons
 - Open file locations in Explorer
+- Copy the full path(s) of selected applications
 
 ## Installation & Run
 
@@ -33,9 +35,15 @@ AS AppBox is an application manager that helps you organize and quickly launch y
 - `Insert`: Add application
 - `Delete`: Remove selected application
 - `Ctrl+S`: Save list
+- `Enter` : Run selected applications
 - `Ctrl+A`: Select all
 - `Esc`: Deselect all
+- `Alt+F4` : Exit
 
+## History
+- v1.0 : 25/04/2025
+  - First version
+  
 ## Developer
 
 Mesut Akcan
