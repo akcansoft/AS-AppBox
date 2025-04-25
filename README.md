@@ -18,7 +18,7 @@ AS AppBox is an application manager that helps you organize and quickly launch y
 ## Installation & Run
 
 1. Install [AutoHotkey v2](https://www.autohotkey.com/).
-2. Download the `AppBox.ahk` file.
+2. Download the [AppBox.ahk](https://github.com/akcansoft/AS-AppBox/blob/main/AppBox.ahk) file.
 3. Double-click the script to run.
 
 ## Usage
