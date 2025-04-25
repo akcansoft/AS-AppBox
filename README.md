@@ -50,3 +50,6 @@ Mesut Akcan
 - [akcansoft.blogspot.com](https://akcansoft.blogspot.com)
 - [youtube.com/mesutakcan](https://youtube.com/mesutakcan)
 - [github.com/akcansoft](https://github.com/akcansoft)
+
+## Contributing
+Contributions are welcome! If you'd like to add features, fix bugs, or improve the code, feel free to open a pull request.
