@@ -55,7 +55,7 @@ menuTxt := {
 }
 
 ; GUI Controls
-mainGui := Gui("+Resize +MinSize400x300", appName " " appVer)
+mainGui := Gui("+Resize +MinSize400x300", appName)
 mainGui.Opt("+OwnDialogs")
 ; Filter Controls
 mainGui.Add("Text", "y+10", "Filter:")
