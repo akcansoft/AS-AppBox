@@ -11,9 +11,12 @@ Main features:
 - Context menu for quick actions
 - Multiple view modes (list/icon)
 - Open file locations
+- Copy full path to clipboard
+- Clear list
+- Select/deselect all items
 -----------------------------
-v1.0 R16
-25/04/2025
+v1.0 R17
+09/05/2025
 -----------------------------
 Mesut Akcan
 makcan@gmail.com
@@ -28,7 +31,6 @@ github.com/akcansoft
 
 appName := "AS AppBox"
 appVer := "1.0"
-settingsFile := A_ScriptDir "\settings.ini"
 listFile := A_ScriptDir "\applist.txt"
 appListChanged := false
 iconLoadIndex := 0
@@ -54,41 +56,54 @@ menuTxt := {
   help: "&Help"
 }
 
+; Button Text
+btn := {
+  clear:  Chr(0xE750),
+  add:    Chr(0xF8AA) " &Add",
+  remove: Chr(0xF8AB) " &Remove",
+  run:    Chr(0xE966) " &Run",
+  save:   Chr(0xE74E) " &Save",
+  switch: Chr(0xE8EB) " &Switch view",
+  exit:   Chr(0xE7E8) " &Exit"
+}
+
 ; GUI Controls
-mainGui := Gui("+Resize +MinSize400x300", appName)
-mainGui.Opt("+OwnDialogs")
+mGui := Gui("+Resize +MinSize400x300", appName)
+mGui.Opt("+OwnDialogs")
 ; Filter Controls
-mainGui.Add("Text", "y+10", "Filter:")
-txtFilter := mainGui.Add("Edit", "x+5 yp-3 w200")
-btnClearFilter := mainGui.Add("Button", "x+5", "❌")
+mGui.Add("Text", "y+10" , "Filter:") ; Filter label
+mGui.SetFont("s12", "Segoe MDL2 Assets") 
+; https://learn.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font
+txtFilter := mGui.Add("Edit", "x+5 yp-4 w200") ; Filter input
+btnClearFilter := mGui.Add("Button", "x+3 yp-2", btn.clear) ; Clear filter button
 btnClearFilter.OnEvent("Click", (*) => (txtFilter.Value := "", FilterList()))
 txtFilter.OnEvent("Change", FilterList)
 
 ; Toolbar Buttons
-mainGui.SetFont("s10")
-buttonHeight := 30
-btnAdd := mainGui.Add("Button", "x10 y+10 h" buttonHeight, "➕ &Add")
+buttonHeight := 32
+btnAdd := mGui.Add("Button", "x10 y+10 h" buttonHeight, btn.add) ; Add button
 btnAdd.OnEvent("Click", AddToList)
-btnRemove := mainGui.Add("Button", "Disabled x+5 h" buttonHeight, Chr(0x2796) " &Remove")
+btnRemove := mGui.Add("Button", "Disabled x+5 h" buttonHeight, btn.remove) ; Remove button
 btnRemove.OnEvent("Click", RemoveSelected)
-btnRun := mainGui.Add("Button", "Disabled x+5 h" buttonHeight, "🚀 &Run")
+btnRun := mGui.Add("Button", "Disabled x+5 h" buttonHeight, btn.run) ; Run button
 btnRun.OnEvent("Click", RunSelected)
-btnSave := mainGui.Add("Button", "Disabled x+5 h" buttonHeight, "💾 &Save")
+btnSave := mGui.Add("Button", "Disabled x+5 h" buttonHeight, btn.save) ; Save button
 btnSave.OnEvent("Click", SaveList)
-mainGui.Add("Button", "x+5 h" buttonHeight, "🔃 &Switch view").OnEvent("Click", SwitchView)
-mainGui.Add("Button", "x+5 h" buttonHeight, "⏻ &Exit").OnEvent("Click", g1Close)
+mGui.Add("Button", "x+5 h" buttonHeight, btn.switch).OnEvent("Click", SwitchView)
+mGui.Add("Button", "x+5 h" buttonHeight, btn.exit).OnEvent("Click", g1Close)
+btn := {}
 
 ; ListView & StatusBar
-mainGui.SetFont("s9")
-LV1 := mainGui.Add("ListView", "x10 y+5 r15 w380 Grid", ["File name", "Full path"])
+mGui.SetFont("s9", "MS Shell Dlg")
+LV1 := mGui.Add("ListView", "x10 y+5 r15 w380 Grid", ["File name", "Full path"])
 LV1.OnEvent("DoubleClick", RunSelected)
 LV1.OnEvent("ItemSelect", UpdateUIState)
 LV1.OnEvent("ContextMenu", ShowContextMenu)
-sbMain := mainGui.Add("StatusBar")
+sbMain := mGui.Add("StatusBar")
 
-mainGui.OnEvent("Size", GuiResize)
-mainGui.OnEvent("Close", g1Close)
-mainGui.OnEvent("DropFiles", DropHandler)
+mGui.OnEvent("Size", GuiResize)
+mGui.OnEvent("Close", g1Close)
+mGui.OnEvent("DropFiles", DropHandler)
 
 ; Create Menu
 fileMenu := Menu()
@@ -102,10 +117,10 @@ helpMenu.Add(menuTxt.about, About)
 mnuBar := MenuBar()
 mnuBar.Add(menuTxt.file, fileMenu)
 mnuBar.Add(menuTxt.help, helpMenu)
-mainGui.MenuBar := mnuBar
+mGui.MenuBar := mnuBar
 
 ; Hotkeys
-#HotIf WinActive("ahk_id " mainGui.Hwnd)
+#HotIf WinActive("ahk_id " mGui.Hwnd)
 Insert:: AddToList()
 ^s:: (btnSave.Enabled ? SaveList() : SoundBeep())
 ^a:: SelectAll(true)
@@ -114,7 +129,7 @@ Del:: (btnRemove.Enabled ? RemoveSelected() : SoundBeep())
 #HotIf
 
 ; Show GUI
-mainGui.Show("w550 h600")
+mGui.Show("w550 h600")
 LoadList()
 SwitchView()
 
@@ -514,5 +529,5 @@ akcansoft.blogspot.com
 mesutakcan.blogspot.com
 github.com/akcansoft
 youtube.com/mesutakcan
-)", appName, appVer), "About", "Owner" mainGui.Hwnd)
+)", appName, appVer), "About", "Owner" mGui.Hwnd)
 }
