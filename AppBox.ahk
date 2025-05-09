@@ -15,7 +15,7 @@ Main features:
 - Clear list
 - Select/deselect all items
 -----------------------------
-v1.0 R17
+v1.0 R18
 09/05/2025
 -----------------------------
 Mesut Akcan
@@ -58,21 +58,21 @@ menuTxt := {
 
 ; Button Text
 btn := {
-  clear:  Chr(0xE750),
-  add:    Chr(0xF8AA) " &Add",
+  clear: Chr(0xE750),
+  add: Chr(0xF8AA) " &Add",
   remove: Chr(0xF8AB) " &Remove",
-  run:    Chr(0xE966) " &Run",
-  save:   Chr(0xE74E) " &Save",
+  run: Chr(0xE966) " &Run",
+  save: Chr(0xE74E) " &Save",
   switch: Chr(0xE8EB) " &Switch view",
-  exit:   Chr(0xE7E8) " &Exit"
+  exit: Chr(0xE7E8) " &Exit"
 }
 
 ; GUI Controls
 mGui := Gui("+Resize +MinSize400x300", appName)
 mGui.Opt("+OwnDialogs")
 ; Filter Controls
-mGui.Add("Text", "y+10" , "Filter:") ; Filter label
-mGui.SetFont("s12", "Segoe MDL2 Assets") 
+mGui.Add("Text", "y+10", "Filter:") ; Filter label
+mGui.SetFont("s12", "Segoe MDL2 Assets")
 ; https://learn.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font
 txtFilter := mGui.Add("Edit", "x+5 yp-4 w200") ; Filter input
 btnClearFilter := mGui.Add("Button", "x+3 yp-2", btn.clear) ; Clear filter button
@@ -80,18 +80,22 @@ btnClearFilter.OnEvent("Click", (*) => (txtFilter.Value := "", FilterList()))
 txtFilter.OnEvent("Change", FilterList)
 
 ; Toolbar Buttons
-buttonHeight := 32
-btnAdd := mGui.Add("Button", "x10 y+10 h" buttonHeight, btn.add) ; Add button
-btnAdd.OnEvent("Click", AddToList)
-btnRemove := mGui.Add("Button", "Disabled x+5 h" buttonHeight, btn.remove) ; Remove button
+; Add
+btnAdd := mGui.Add("Button", "x10 y+10 h32", btn.add).OnEvent("Click", AddToList)
+; Remove
+btnRemove := mGui.Add("Button", "Disabled x+5 hp", btn.remove)
 btnRemove.OnEvent("Click", RemoveSelected)
-btnRun := mGui.Add("Button", "Disabled x+5 h" buttonHeight, btn.run) ; Run button
+; Run
+btnRun := mGui.Add("Button", "Disabled x+5 hp", btn.run)
 btnRun.OnEvent("Click", RunSelected)
-btnSave := mGui.Add("Button", "Disabled x+5 h" buttonHeight, btn.save) ; Save button
+; Save
+btnSave := mGui.Add("Button", "Disabled x+5 hp", btn.save)
 btnSave.OnEvent("Click", SaveList)
-mGui.Add("Button", "x+5 h" buttonHeight, btn.switch).OnEvent("Click", SwitchView)
-mGui.Add("Button", "x+5 h" buttonHeight, btn.exit).OnEvent("Click", g1Close)
-btn := {}
+; Switch View
+mGui.Add("Button", "x+5 hp", btn.switch).OnEvent("Click", SwitchView)
+; Exit
+mGui.Add("Button", "x+5 hp", btn.exit).OnEvent("Click", g1Close)
+btn := {} ; Clear btn object
 
 ; ListView & StatusBar
 mGui.SetFont("s9", "MS Shell Dlg")
@@ -517,7 +521,7 @@ OpenFileLocation(*) {
 }
 
 About(*) {
-MsgBox(Format("
+  MsgBox(Format("
 (
 {1} v{2}
 
